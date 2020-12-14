@@ -2,25 +2,22 @@
  * Shared between browser and server.
  */
 class Counter {
-  #count;
-  #type;
-
   constructor(value) {
-    this.#count = parseInt(value) || 1;
-    this.#type = typeof(window) === 'object' ? 'Browser' : 'API';
+    this._count = parseInt(value) || 1;
+    this._type = typeof(window) === 'object' ? 'Browser' : 'API';
   }
 
   increment() {
     console.log(`[Counter ${this.type}] INCREMENTING value ${this.value} => ${this.value+1}`);
-    this.#count++;
+    this._count++;
   }
 
   get value() {
-    return this.#count;
+    return this._count;
   }
 
   get type() {
-    return this.#type;
+    return this._type;
   }
 }
 

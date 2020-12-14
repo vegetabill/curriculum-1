@@ -1,13 +1,14 @@
-const BrowserCounter = () => {
-  const [count, setCount] = React.useState(0);
+const BrowserCounter = ({counter}) => {
+  const [value, setValue] = React.useState(counter.value);
   return (
     <form>
       <h1>Browser</h1>
-      <p className="counter">{count}</p>
+      <p className="counter">{value}</p>
       <input
         onClick={(e) => {
           e.preventDefault();
-          setCount(count + 1);
+          counter.increment();
+          setValue(counter.value);
         }}
         type="submit"
         value="+"
@@ -35,7 +36,7 @@ const ApiCounter = () => {
 };
 const App = () => (
   <div style={{display:"flex", justifyContent: "space-evenly"}}>
-    <BrowserCounter />
+    <BrowserCounter counter={new Counter()} />
     <ApiCounter />
   </div>
 );
