@@ -1,34 +1,32 @@
 const http = require('http');
-const fs = require('fs').promises;
+const Counter = require('./Counter');
+const serveFile = require('./serveFile');
+
 const PORT = 3000;
 
-function serveFile(res, filename, type) {
-  console.log(`[200] serving ${filename}`);
-  return fs.readFile(filename).then((contents) => {
-    if (type) {
-      res.setHeader('Content-Type', type);
-    }
-    res.writeHead(200);
-    res.end(contents);
-  });
-}
+const counter = new Counter();
 
 const requestListener = function (req, res) {
-  const { url } = req;
+  const { url, method } = req;
   switch (url) {
     case '/':
-    case '/index.html':
-      return serveFile(res, './index.html', 'text/html');
-    case '/components.jsx':
-      return serveFile(res, './components.jsx', 'text/jsx')
+      res.writeHead(302, { 'Location': '/index.html' });
+      return res.end();
+    case '/counter':
+      switch (method) {
+        case 'GET':
+          return res.end(JSON.stringify({ value: counter.value }));
+        case 'POST':
+          counter.increment();
+          return res.end(JSON.stringify({ value: counter.value }));
+      }
     default:
-      console.warn(`[404] Not found: ${url}`)
-      res.writeHead(404);
-      res.end('Not Found\n');
+      return serveFile(res, url);
   }
 };
 
 const server = http.createServer(requestListener);
 server.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
+  console.log(`Counter ${counter.type} = ${counter.value}`)
 });
