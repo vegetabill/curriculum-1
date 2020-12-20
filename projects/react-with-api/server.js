@@ -28,5 +28,5 @@ const requestListener = function (req, res) {
 const server = http.createServer(requestListener);
 server.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
-  console.log(`Counter ${counter.type} = ${counter.value}`)
+  console.log(counter.printLog())
 });

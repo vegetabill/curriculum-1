@@ -1,23 +1,16 @@
-/**
- * Shared between browser and server.
- */
 class Counter {
   constructor(value) {
-    this._count = parseInt(value) || 1;
-    this._type = typeof(window) === 'object' ? 'Browser' : 'API';
+    this.value = parseInt(value) || 1;
+    this.type = typeof(window) === 'object' ? 'Browser' : 'Node';
   }
 
   increment() {
-    console.log(`[Counter ${this.type}] INCREMENTING value ${this.value} => ${this.value+1}`);
-    this._count++;
+    this.value++;
+    this.printLog();
   }
 
-  get value() {
-    return this._count;
-  }
-
-  get type() {
-    return this._type;
+  printLog() {
+    console.log(`[Counter/${this.type}]`, this.value);
   }
 }
 
